@@ -1,9 +1,10 @@
-package io.github.xinfra.lab.telemetry;
+package io.github.xinfra.lab.telemetry.server;
 
 /**
- * x-telemetry java-agent
+ * Hello world!
+ *
  */
-public class XTelemetryAgent
+public class App 
 {
     public static void main( String[] args )
     {
