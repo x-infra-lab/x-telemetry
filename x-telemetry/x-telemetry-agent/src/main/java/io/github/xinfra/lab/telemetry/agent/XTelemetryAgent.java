@@ -1,6 +1,7 @@
 package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
+import io.github.xinfra.lab.telemetry.plugin.PluginManager;
 
 import java.lang.instrument.Instrumentation;
 
@@ -12,9 +13,19 @@ public class XTelemetryAgent {
         try {
             ConfigManager configManager = new ConfigManager();
             configManager.load(agentArgs);
+
+            PluginManager.loadPlugins();
+
+            installTransformer(inst);
+
+
         } catch (Exception e) {
             // todo
             e.printStackTrace();
         }
+    }
+
+    private static void installTransformer(Instrumentation inst) {
+        // todo
     }
 }

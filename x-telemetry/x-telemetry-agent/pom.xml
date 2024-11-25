@@ -18,9 +18,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.4</version>
+            <groupId>io.github.xinfra.lab</groupId>
+            <artifactId>x-telemetry-agent-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
