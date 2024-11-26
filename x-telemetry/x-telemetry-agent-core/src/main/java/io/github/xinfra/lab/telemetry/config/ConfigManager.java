@@ -17,18 +17,19 @@ public class ConfigManager {
         // load config file
         loadConfigFile(properties);
 
+        // load system env
+        loadSystemEnv(properties);
+
         // load system properties
         loadSystemProperties(properties);
 
-        // load agent Args
-        loadAgentArgs(properties);
 
         BeanUtilsBean2.getInstance().populate(CONFIG, properties);
     }
 
-    private void loadAgentArgs(Map<String, Object> properties) {
-        // todo
+    private void loadSystemEnv(Map<String, Object> properties) {
     }
+
 
     private void loadSystemProperties(Map<String, Object> properties) {
         // todo

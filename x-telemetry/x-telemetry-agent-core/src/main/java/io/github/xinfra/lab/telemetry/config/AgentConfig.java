@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AgentConfig {
     private String serviceName;
-    private String groupName;
+    private String group;
     private String version;
+
+    private CollectorConfig collector;
+    private LoggingConfig logging;
+    private PluginConfig plugin;
 }
