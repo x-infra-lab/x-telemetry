@@ -1,20 +1,19 @@
 package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
-import io.github.xinfra.lab.telemetry.logger.LoggerManager;
+import io.github.xinfra.lab.telemetry.log.LogManager;
 import io.github.xinfra.lab.telemetry.plugin.PluginManager;
 import io.github.xinfra.lab.telemetry.service.ServiceManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.instrument.Instrumentation;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * x-telemetry java-agent
  */
 public class XTelemetryAgent {
 
-    private static Logger LOGGER = LoggerManager.getLogger(XTelemetryAgent.class);
+    private static Logger LOGGER = LogManager.getLogger(XTelemetryAgent.class);
 
     public static void premain(String agentArgs, Instrumentation inst) {
         try {
@@ -23,7 +22,7 @@ public class XTelemetryAgent {
             // todo
         } finally {
             // use agent config refresh logger
-            LOGGER = LoggerManager.getLogger(XTelemetryAgent.class);
+            LOGGER = LogManager.getLogger(XTelemetryAgent.class);
         }
 
         if (!ConfigManager.CONFIG.isEnable()) {
