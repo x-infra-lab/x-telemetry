@@ -11,7 +11,6 @@
     <modules>
         <module>x-telemetry-agent</module>
         <module>x-telemetry-plugin</module>
-        <module>x-telemetry-thirdparty</module>
         <module>x-telemetry-agent-core</module>
     </modules>
 

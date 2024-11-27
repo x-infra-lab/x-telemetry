@@ -1,28 +1,56 @@
 package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
+import io.github.xinfra.lab.telemetry.logger.LoggerManager;
 import io.github.xinfra.lab.telemetry.plugin.PluginManager;
+import io.github.xinfra.lab.telemetry.service.ServiceManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * x-telemetry java-agent
  */
 public class XTelemetryAgent {
+
+    private static Logger LOGGER = LoggerManager.getLogger(XTelemetryAgent.class);
+
     public static void premain(String agentArgs, Instrumentation inst) {
         try {
-            ConfigManager configManager = new ConfigManager();
-            configManager.load(agentArgs);
-
-            PluginManager.loadPlugins();
-
-            installTransformer(inst);
-
-
+            ConfigManager.loadConfig(agentArgs);
         } catch (Exception e) {
             // todo
-            e.printStackTrace();
+        } finally {
+            // use agent config refresh logger
+            LOGGER = LoggerManager.getLogger(XTelemetryAgent.class);
         }
+
+        if (!ConfigManager.CONFIG.isEnable()) {
+            LOGGER.info("XTelemetryAgent is disabled.");
+            return;
+        }
+
+
+        try {
+            PluginManager.loadPlugins();
+        } catch (Exception e) {
+            // todo
+        }
+
+        try {
+            installTransformer(inst);
+        } catch (Exception e) {
+            // todo
+        }
+        try {
+            ServiceManager.startup();
+        } catch (Exception e) {
+            // todo
+        }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(ServiceManager::shutdown,
+                "XTelemetryAgent-ShutdownHook-Thread"));
     }
 
     private static void installTransformer(Instrumentation inst) {

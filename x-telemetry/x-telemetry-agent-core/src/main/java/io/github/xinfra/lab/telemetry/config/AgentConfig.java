@@ -9,6 +9,7 @@ public class AgentConfig {
     private String serviceName;
     private String group;
     private String version;
+    private boolean enable = true;
 
     private CollectorConfig collector;
     private LoggingConfig logging;

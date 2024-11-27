@@ -1,8 +1,7 @@
 package io.github.xinfra.lab.telemetry.config;
 
 
-import org.xinfra.lab.telemetry.shade.org.apache.commons.beanutils.BeanUtilsBean2;
-
+import org.apache.commons.beanutils.BeanUtilsBean2;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +10,7 @@ public class ConfigManager {
 
     public static final AgentConfig CONFIG = new AgentConfig();
 
-    public void load(String agentArgs) throws InvocationTargetException, IllegalAccessException {
+    public static void loadConfig(String agentArgs) throws InvocationTargetException, IllegalAccessException {
         Map<String, Object> properties = new HashMap<>();
 
         // load config file
@@ -27,15 +26,15 @@ public class ConfigManager {
         BeanUtilsBean2.getInstance().populate(CONFIG, properties);
     }
 
-    private void loadSystemEnv(Map<String, Object> properties) {
+    private static void loadSystemEnv(Map<String, Object> properties) {
     }
 
 
-    private void loadSystemProperties(Map<String, Object> properties) {
+    private static void loadSystemProperties(Map<String, Object> properties) {
         // todo
     }
 
-    private void loadConfigFile(Map<String, Object> properties) {
+    private static void loadConfigFile(Map<String, Object> properties) {
         // todo
     }
 }
