@@ -12,6 +12,6 @@ public class AgentConfig {
     private boolean enable = true;
 
     private CollectorConfig collector;
-    private LogConfig logging;
+    private LogConfig log;
     private PluginConfig plugin;
 }

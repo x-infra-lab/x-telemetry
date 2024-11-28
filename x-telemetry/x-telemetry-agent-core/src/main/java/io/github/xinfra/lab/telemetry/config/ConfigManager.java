@@ -1,6 +1,7 @@
 package io.github.xinfra.lab.telemetry.config;
 
 
+import io.github.xinfra.lab.telemetry.log.LogManager;
 import org.apache.commons.beanutils.BeanUtilsBean2;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -39,6 +40,6 @@ public class ConfigManager {
     }
 
     public static void refreshConfig() {
-
+        LogManager.refreshConfig(CONFIG.getLog());
     }
 }

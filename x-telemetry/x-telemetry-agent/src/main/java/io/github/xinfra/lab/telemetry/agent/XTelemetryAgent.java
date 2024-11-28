@@ -2,11 +2,22 @@ package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
 import io.github.xinfra.lab.telemetry.log.LogManager;
+import io.github.xinfra.lab.telemetry.plugin.AbstractClassEnhancePlugin;
 import io.github.xinfra.lab.telemetry.plugin.PluginManager;
 import io.github.xinfra.lab.telemetry.service.ServiceManager;
+import net.bytebuddy.agent.builder.AgentBuilder;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.matcher.ElementMatchers;
+import net.bytebuddy.utility.JavaModule;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.instrument.Instrumentation;
+import java.security.ProtectionDomain;
+import java.util.List;
+
+import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
 
 /**
  * x-telemetry java-agent
@@ -58,6 +69,34 @@ public class XTelemetryAgent {
     }
 
     private static void installTransformer(Instrumentation inst) {
-        // todo
+        new AgentBuilder.Default()
+                .ignore(
+                        ElementMatchers.isSynthetic()
+                                .or(nameStartsWith("net.bytebuddy.")) // ignore bytebuddy
+                )
+                .type(PluginManager.typeMatcher())
+                .transform(new AgentTransformer())
+                .installOn(inst);
+    }
+
+
+    public static class AgentTransformer implements AgentBuilder.Transformer{
+
+        @Override
+        public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder,
+                                                TypeDescription typeDescription,
+                                                ClassLoader classLoader,
+                                                JavaModule module,
+                                                ProtectionDomain protectionDomain) {
+
+           List<AbstractClassEnhancePlugin> classEnhancePluginList =  PluginManager.getMatchPlugin(typeDescription);
+           if (CollectionUtils.isEmpty(classEnhancePluginList)){
+               LOGGER.info("type:{}. no match classEnhancePlugin", typeDescription);
+               return builder;
+           }
+            // todo
+
+            return null;
+        }
     }
 }
