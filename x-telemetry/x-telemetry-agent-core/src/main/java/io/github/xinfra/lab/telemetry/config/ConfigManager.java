@@ -37,4 +37,8 @@ public class ConfigManager {
     private static void loadConfigFile(Map<String, Object> properties) {
         // todo
     }
+
+    public static void refreshConfig() {
+
+    }
 }

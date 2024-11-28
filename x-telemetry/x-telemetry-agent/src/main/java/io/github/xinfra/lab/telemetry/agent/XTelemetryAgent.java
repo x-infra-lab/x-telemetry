@@ -13,16 +13,21 @@ import java.lang.instrument.Instrumentation;
  */
 public class XTelemetryAgent {
 
-    private static Logger LOGGER = LogManager.getLogger(XTelemetryAgent.class);
+    private static Logger LOGGER =  LogManager.getLogger(XTelemetryAgent.class);
 
     public static void premain(String agentArgs, Instrumentation inst) {
         try {
             ConfigManager.loadConfig(agentArgs);
         } catch (Exception e) {
-            // todo
-        } finally {
-            // use agent config refresh logger
-            LOGGER = LogManager.getLogger(XTelemetryAgent.class);
+            LOGGER.error("XTelemetryAgent load config failed.", e);
+            return;
+        }
+
+        try {
+            ConfigManager.refreshConfig();
+        }catch (Exception e){
+            LOGGER.error("XTelemetryAgent refresh config failed.", e);
+            return;
         }
 
         if (!ConfigManager.CONFIG.isEnable()) {

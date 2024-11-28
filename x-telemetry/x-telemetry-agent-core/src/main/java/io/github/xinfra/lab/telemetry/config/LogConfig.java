@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class LoggingConfig {
+public class LogConfig {
     public  String filename = "x-telemetry.log";
-    public  String dir = "";
+    public  String dir = "logs/";
 
     // todo
 }
