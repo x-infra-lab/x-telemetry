@@ -1,4 +1,4 @@
-package io.github.xinfra.lab.telemetry.plugin.interceptor;
+package io.github.xinfra.lab.telemetry.plugin;
 
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.matcher.ElementMatcher;

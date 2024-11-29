@@ -30,14 +30,14 @@ public class XTelemetryAgent {
         try {
             ConfigManager.loadConfig(agentArgs);
         } catch (Exception e) {
-            LOGGER.error("XTelemetryAgent load config failed.", e);
+            LOGGER.error("XTelemetryAgent load config failed. Shutting down.", e);
             return;
         }
 
         try {
             ConfigManager.refreshConfig();
         }catch (Exception e){
-            LOGGER.error("XTelemetryAgent refresh config failed.", e);
+            LOGGER.error("XTelemetryAgent refresh config failed. Shutting down.", e);
             return;
         }
 
@@ -50,18 +50,19 @@ public class XTelemetryAgent {
         try {
             PluginManager.loadPlugins();
         } catch (Exception e) {
-            // todo
+            LOGGER.error("XTelemetryAgent loadPlugins failed. Shutting down.", e);
+            return;
         }
 
         try {
             installTransformer(inst);
         } catch (Exception e) {
-            // todo
+            LOGGER.error("XTelemetryAgent installTransformer failed.", e);
         }
         try {
             ServiceManager.startup();
         } catch (Exception e) {
-            // todo
+            LOGGER.error("XTelemetryAgent ServiceManager startup failed.", e);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(ServiceManager::shutdown,
@@ -96,10 +97,7 @@ public class XTelemetryAgent {
            }
 
             for (ClassEnhancePlugin classEnhancePlugin : classEnhancePluginList) {
-                DynamicType.Builder<?> maybeNewBuilder = classEnhancePlugin.enhance(builder, typeDescription, classLoader);
-                if (maybeNewBuilder != null){
-                    builder = maybeNewBuilder;
-                }
+                builder = classEnhancePlugin.enhance(builder, typeDescription, classLoader);
             }
 
             return builder;
