@@ -43,18 +43,20 @@ public class LogManager {
         DefaultRolloverStrategy rolloverStrategy = DefaultRolloverStrategy.newBuilder()
                 .withMax(logConfig.getRolloverMax())
                 .build();
+
+        LevelMatchFilter filter = LevelMatchFilter
+                .newBuilder()
+                .setLevel(Level.getLevel(logConfig.getLevel()))
+                .build();
         // build RollingFileAppender
         RollingFileAppender appender = RollingFileAppender.newBuilder()
                 .setName("RollingFileAppender")
+                .setFilter(filter)
                 .withFileName(logConfig.getFilename())
                 .withFilePattern(logConfig.getFileNamePattern())
                 .withLayout(layout)
                 .withPolicy(timeBasedTriggeringPolicy)
                 .withStrategy(rolloverStrategy)
-                .withFilter(LevelMatchFilter
-                        .newBuilder()
-                        .setLevel(Level.getLevel(logConfig.getLevel()))
-                        .build())
                 .build();
         appender.start();
 

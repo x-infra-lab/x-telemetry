@@ -2,7 +2,7 @@ package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
 import io.github.xinfra.lab.telemetry.log.LogManager;
-import io.github.xinfra.lab.telemetry.plugin.AbstractClassEnhancePlugin;
+import io.github.xinfra.lab.telemetry.plugin.ClassEnhancePlugin;
 import io.github.xinfra.lab.telemetry.plugin.PluginManager;
 import io.github.xinfra.lab.telemetry.service.ServiceManager;
 import net.bytebuddy.agent.builder.AgentBuilder;
@@ -89,14 +89,20 @@ public class XTelemetryAgent {
                                                 JavaModule module,
                                                 ProtectionDomain protectionDomain) {
 
-           List<AbstractClassEnhancePlugin> classEnhancePluginList =  PluginManager.getMatchPlugin(typeDescription);
+           List<ClassEnhancePlugin> classEnhancePluginList =  PluginManager.getMatchPlugin(typeDescription);
            if (CollectionUtils.isEmpty(classEnhancePluginList)){
                LOGGER.info("type:{}. no match classEnhancePlugin", typeDescription);
                return builder;
            }
-            // todo
 
-            return null;
+            for (ClassEnhancePlugin classEnhancePlugin : classEnhancePluginList) {
+                DynamicType.Builder<?> maybeNewBuilder = classEnhancePlugin.enhance(builder, typeDescription, classLoader);
+                if (maybeNewBuilder != null){
+                    builder = maybeNewBuilder;
+                }
+            }
+
+            return builder;
         }
     }
 }
