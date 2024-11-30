@@ -14,6 +14,8 @@ import org.apache.logging.log4j.core.appender.rolling.TimeBasedTriggeringPolicy;
 import org.apache.logging.log4j.core.filter.LevelMatchFilter;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
+import java.io.File;
+
 public class LogManager {
     public static Appender defaultAppender = null;
 
@@ -30,7 +32,7 @@ public class LogManager {
     }
 
     public static void refreshConfig(LogConfig logConfig) {
-        Layout layout;
+        Layout<?> layout;
         if (StringUtils.isBlank(logConfig.getLayoutPattern())) {
             layout = PatternLayout.createDefaultLayout();
         } else {
@@ -52,9 +54,9 @@ public class LogManager {
         RollingFileAppender appender = RollingFileAppender.newBuilder()
                 .setName("RollingFileAppender")
                 .setFilter(filter)
-                .withFileName(logConfig.getFilename())
-                .withFilePattern(logConfig.getFileNamePattern())
-                .withLayout(layout)
+                .setLayout(layout)
+                .withFileName(logConfig.getLogDir() + File.separator + logConfig.getFilename())
+                .withFilePattern(logConfig.getLogDir() + File.separator + logConfig.getFileNamePattern())
                 .withPolicy(timeBasedTriggeringPolicy)
                 .withStrategy(rolloverStrategy)
                 .build();

@@ -11,7 +11,7 @@ public class LogConfig {
 
     private String filename = "x-telemetry.log";
 
-    private String logDir = AgentPath.getAgentDirPath()+ "/logs/";
+    private String logDir = AgentPath.getAgentDirPath()+ "/logs";
 
     private String layoutPattern; // default null use default layout
 
@@ -21,5 +21,4 @@ public class LogConfig {
 
     private String rolloverMax = "168"; // 24 hours * 7 = 7 days
 
-    // todo
 }

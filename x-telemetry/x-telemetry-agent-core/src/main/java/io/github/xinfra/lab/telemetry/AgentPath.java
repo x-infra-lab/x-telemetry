@@ -4,8 +4,6 @@ import io.github.xinfra.lab.telemetry.exception.AgentPathLocateException;
 import io.github.xinfra.lab.telemetry.log.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,41 +21,46 @@ public class AgentPath {
 
         synchronized (AgentPath.class) {
             if (agentDirPath == null) {
-                try {
-                    agentDirPath = locateAgentDirPath();
-                } catch (Exception e) {
-                    LOGGER.error("locateAgentDirPath fail.", e);
-                    throw new AgentPathLocateException("locateAgentDirPath fail.", e);
-                }
+                agentDirPath = locateAgentDirPath();
             }
         }
         return agentDirPath;
     }
 
-    private static Path locateAgentDirPath() throws MalformedURLException, URISyntaxException {
-        String resourceName = AgentPath.class.getName().replaceAll("\\.", "/") + ".class";
-        URL resource = AgentPath.class.getClassLoader()
-                .getResource(resourceName);
-        if (resource != null) {
-            String urlString = resource.toString();
-
-            int insidePathIndex = urlString.indexOf('!');
-            boolean isInJar = insidePathIndex > -1;
-            if (isInJar) {
-                urlString = urlString.substring(urlString.indexOf("file:"), insidePathIndex);
-                Path agentJarPath = Paths.get(new URL(urlString).toURI());
-                if (Files.exists(agentJarPath)) {
-                    return agentJarPath.getParent();
+    private static Path locateAgentDirPath() throws AgentPathLocateException {
+        try {
+            String resourceName = AgentPath.class.getName().replaceAll("\\.", "/") + ".class";
+            URL resource = AgentPath.class.getClassLoader()
+                    .getResource(resourceName);
+            Path agentDirPath = null;
+            if (resource != null) {
+                String urlString = resource.toString();
+                int insidePathIndex = urlString.indexOf('!');
+                boolean isInJar = insidePathIndex > -1;
+                if (isInJar) {
+                    urlString = urlString.substring(urlString.indexOf("file:"), insidePathIndex);
+                    Path agentJarPath = Paths.get(new URL(urlString).toURI());
+                    agentDirPath = agentJarPath.getParent();
+                } else {
+                    // maybe in ide environment
+                    urlString = urlString.substring(urlString.indexOf("file:"), urlString.length() - resourceName.length());
+                    agentDirPath = Paths.get(new URL(urlString).toURI());
                 }
             } else {
-                // maybe in ide environment
-                urlString = urlString.substring(urlString.indexOf("file:"), urlString.length() - resourceName.length());
-                Path agentDirPath = Paths.get(new URL(urlString).toURI());
-                if (Files.exists(agentDirPath)) {
-                    return agentDirPath;
-                }
+                throw new AgentPathLocateException("locate agent dir fail. resource not found. resourceName:" + resourceName);
+            }
+            if (Files.exists(agentDirPath)) {
+                return agentDirPath;
+            } else {
+                throw new AgentPathLocateException("locate agent dir fail. dir not exist. dirPath:" + agentDirPath);
+            }
+        } catch (Exception e) {
+            LOGGER.error("locateAgentDirPath fail.", e);
+            if (e instanceof AgentPathLocateException) {
+                throw (AgentPathLocateException) e;
+            } else {
+                throw new AgentPathLocateException("locateAgentDirPath fail.", e);
             }
         }
-        throw new AgentPathLocateException("locate agent dir fail.");
     }
 }
