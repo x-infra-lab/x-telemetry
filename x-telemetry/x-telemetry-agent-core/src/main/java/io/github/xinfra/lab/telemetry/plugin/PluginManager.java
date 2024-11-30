@@ -10,8 +10,9 @@ import java.util.List;
 
 public class PluginManager {
 
+
     @Getter
-    private static List<ClassEnhancePlugin> classEnhancePlugins = new ArrayList<>();
+    private static List<ComponentPlugin> plugins = new ArrayList<>();
 
     public static void loadPlugins() {
         // todo
@@ -19,19 +20,23 @@ public class PluginManager {
 
     public static ElementMatcher<TypeDescription> typeMatcher() {
         ElementMatcher.Junction<TypeDescription> matcher  = ElementMatchers.none();
-        for (ClassEnhancePlugin classEnhancePlugin : classEnhancePlugins) {
-                matcher = matcher.or(classEnhancePlugin.enhanceClass());
+        for (ComponentPlugin plugin : plugins) {
+            for (ClassEnhancement classEnhancement : plugin.classEnhancements()) {
+                matcher = matcher.or(classEnhancement.enhanceClass());
+            }
         }
         return matcher;
     }
 
-    public static List<ClassEnhancePlugin> getMatchPlugin(TypeDescription typeDescription) {
-        List<ClassEnhancePlugin> matchPlugins = new ArrayList<>();
-        for (ClassEnhancePlugin classEnhancePlugin : classEnhancePlugins) {
-            if (classEnhancePlugin.enhanceClass().matches(typeDescription)) {
-                matchPlugins.add(classEnhancePlugin);
+    public static List<ClassEnhancement> getMatchClassEnhancements(TypeDescription typeDescription) {
+        List<ClassEnhancement> matchClassEnhancements = new ArrayList<>();
+        for (ComponentPlugin plugin : plugins) {
+            for (ClassEnhancement classEnhancement : plugin.classEnhancements()) {
+                if (classEnhancement.enhanceClass().matches(typeDescription)) {
+                    matchClassEnhancements.add(classEnhancement);
+                }
             }
         }
-        return matchPlugins;
+        return matchClassEnhancements;
     }
 }

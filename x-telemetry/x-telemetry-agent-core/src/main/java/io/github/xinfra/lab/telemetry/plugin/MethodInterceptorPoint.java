@@ -9,10 +9,12 @@ public interface MethodInterceptorPoint {
 
     String getMethodInterceptor();
 
-    boolean isOverrideArgs();
+    default boolean isStatic() {
+        return false;
+    }
 
-    boolean isStatic();
-
-    boolean isConstructor();
+    default boolean isConstructor() {
+        return false;
+    }
 
 }

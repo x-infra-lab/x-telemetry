@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Plugin {
+public class PluginDefine {
     private String name;
     private String defineClass;
 }

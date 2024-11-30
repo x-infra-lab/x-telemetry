@@ -7,9 +7,9 @@ import net.bytebuddy.matcher.ElementMatcher;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.Logger;
 
-public interface ClassEnhancePlugin {
+public interface ClassEnhancement {
 
-    Logger LOGGER = LogManager.getLogger(ClassEnhancePlugin.class);
+    Logger LOGGER = LogManager.getLogger(ClassEnhancement.class);
 
     default String[] witnessClasses() {
         return null;
@@ -18,8 +18,6 @@ public interface ClassEnhancePlugin {
     default WitnessMethod[] witnessMethods() {
         return null;
     }
-
-    String pluginName();
 
     ElementMatcher<TypeDescription> enhanceClass();
 
@@ -32,7 +30,7 @@ public interface ClassEnhancePlugin {
         if (ArrayUtils.isNotEmpty(witnessClasses())) {
             for (String className : witnessClasses()) {
                 if (!Witnesses.resolveClass(className, classLoader)) {
-                    LOGGER.warn("plugin:{} can not resolve class:{}", pluginName(), className);
+                    LOGGER.warn("enhancement:{} can not resolve class:{}", this.getClass(), className);
                     return builder;
                 }
             }
@@ -41,14 +39,14 @@ public interface ClassEnhancePlugin {
         if (ArrayUtils.isNotEmpty(witnessMethods())) {
             for (WitnessMethod witnessMethod : witnessMethods()) {
                 if (!Witnesses.resolveMethod(witnessMethod, classLoader)) {
-                    LOGGER.warn("plugin:{} can not resolve method:{}", pluginName(), witnessMethod);
+                    LOGGER.warn("enhancement:{} can not resolve method:{}", this.getClass(), witnessMethod);
                     return builder;
                 }
             }
         }
 
         if (ArrayUtils.isEmpty(methodInterceptorPoints())) {
-            LOGGER.warn("plugin:{} can not found any interceptor", pluginName());
+            LOGGER.warn("enhancement:{} can not found any interceptor", this.getClass());
             return builder;
         }
 

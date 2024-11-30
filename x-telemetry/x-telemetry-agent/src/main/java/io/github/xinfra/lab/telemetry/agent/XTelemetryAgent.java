@@ -2,7 +2,7 @@ package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
 import io.github.xinfra.lab.telemetry.log.LogManager;
-import io.github.xinfra.lab.telemetry.plugin.ClassEnhancePlugin;
+import io.github.xinfra.lab.telemetry.plugin.ClassEnhancement;
 import io.github.xinfra.lab.telemetry.plugin.PluginManager;
 import io.github.xinfra.lab.telemetry.service.ServiceManager;
 import net.bytebuddy.agent.builder.AgentBuilder;
@@ -24,7 +24,7 @@ import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
  */
 public class XTelemetryAgent {
 
-    private static Logger LOGGER =  LogManager.getLogger(XTelemetryAgent.class);
+    private static Logger LOGGER = LogManager.getLogger(XTelemetryAgent.class);
 
     public static void premain(String agentArgs, Instrumentation inst) {
         try {
@@ -36,7 +36,7 @@ public class XTelemetryAgent {
 
         try {
             ConfigManager.refreshConfig();
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("XTelemetryAgent refresh config failed. Shutting down.", e);
             return;
         }
@@ -81,7 +81,7 @@ public class XTelemetryAgent {
     }
 
 
-    public static class AgentTransformer implements AgentBuilder.Transformer{
+    public static class AgentTransformer implements AgentBuilder.Transformer {
 
         @Override
         public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder,
@@ -90,14 +90,14 @@ public class XTelemetryAgent {
                                                 JavaModule module,
                                                 ProtectionDomain protectionDomain) {
 
-           List<ClassEnhancePlugin> classEnhancePluginList =  PluginManager.getMatchPlugin(typeDescription);
-           if (CollectionUtils.isEmpty(classEnhancePluginList)){
-               LOGGER.info("type:{}. no match classEnhancePlugin", typeDescription);
-               return builder;
-           }
+            List<ClassEnhancement> classEnhancementList = PluginManager.getMatchClassEnhancements(typeDescription);
+            if (CollectionUtils.isEmpty(classEnhancementList)) {
+                LOGGER.info("type:{}. no match classEnhancement", typeDescription);
+                return builder;
+            }
 
-            for (ClassEnhancePlugin classEnhancePlugin : classEnhancePluginList) {
-                builder = classEnhancePlugin.enhance(builder, typeDescription, classLoader);
+            for (ClassEnhancement classEnhancement : classEnhancementList) {
+                builder = classEnhancement.enhance(builder, typeDescription, classLoader);
             }
 
             return builder;
