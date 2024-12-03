@@ -2,6 +2,7 @@ package io.github.xinfra.lab.telemetry.plugin.delegation;
 
 import io.github.xinfra.lab.telemetry.exception.AgentClassLoadException;
 import io.github.xinfra.lab.telemetry.log.LogManager;
+import io.github.xinfra.lab.telemetry.plugin.InterceptContext;
 import io.github.xinfra.lab.telemetry.plugin.Interceptors;
 import io.github.xinfra.lab.telemetry.plugin.interceptor.StaticMethodAroundInterceptor;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
@@ -31,8 +32,9 @@ public class StaticMethodDelegation {
                             @AllArguments Object[] allArguments,
                             @SuperCall Callable<?> zuper) throws Throwable {
 
+        InterceptContext interceptContext = new InterceptContext();
         try {
-            interceptor.beforeMethod(clazz, method, allArguments);
+            interceptor.beforeMethod(interceptContext, clazz, method, allArguments);
         } catch (Throwable t) {
             LOGGER.error("StaticMethodAroundInterceptor beforeMethod failed. class:{} method:{}", clazz, method.getName());
         }
@@ -41,14 +43,14 @@ public class StaticMethodDelegation {
             result = zuper.call();
         } catch (Throwable throwable) {
             try {
-                interceptor.methodException(clazz, method, allArguments, throwable);
+                interceptor.methodException(interceptContext, clazz, method, allArguments, throwable);
             } catch (Throwable t) {
                 LOGGER.error("StaticMethodAroundInterceptor methodException failed. class:{} method:{}", clazz, method.getName());
             }
             throw throwable;
         } finally {
             try {
-                result = interceptor.afterMethod(clazz, method, allArguments, result);
+                result = interceptor.afterMethod(interceptContext, clazz, method, allArguments, result);
             } catch (Throwable t) {
                 LOGGER.error("StaticMethodAroundInterceptor afterMethod failed. class:{} method:{}", clazz, method.getName());
             }

@@ -1,14 +1,20 @@
 package io.github.xinfra.lab.telemetry.service;
 
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public class ServiceManager {
 
+    private static List<AgentService> serviceList = Lists.newArrayList(new OpenTelemetrys());
+
+
     public static void startup() {
-        // todo
+        serviceList.forEach(AgentService::startup);
     }
 
-
     public static void shutdown() {
-        // todo
+        serviceList.forEach(AgentService::shutdown);
     }
 }
