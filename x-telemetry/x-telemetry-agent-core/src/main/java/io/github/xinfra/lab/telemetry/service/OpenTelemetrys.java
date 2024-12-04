@@ -1,18 +1,20 @@
 package io.github.xinfra.lab.telemetry.service;
 
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.logs.SdkLoggerProvider;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import lombok.Getter;
 
 import java.util.concurrent.TimeUnit;
 
 public class OpenTelemetrys implements AgentService {
 
-    @Getter
+
     private static OpenTelemetry openTelemetry = OpenTelemetry.noop();
+
+
 
     @Override
     public void startup() {
@@ -38,4 +40,12 @@ public class OpenTelemetrys implements AgentService {
     }
 
 
+    public static OpenTelemetry get(){
+        return openTelemetry;
+    }
+
+    public static Tracer getTracer(String scopeName) {
+        // todo cache it
+        return openTelemetry.getTracer(scopeName);
+    }
 }

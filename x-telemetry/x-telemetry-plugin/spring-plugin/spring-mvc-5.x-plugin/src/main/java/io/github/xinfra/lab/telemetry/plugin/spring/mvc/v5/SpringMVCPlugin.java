@@ -5,11 +5,14 @@ import io.github.xinfra.lab.telemetry.plugin.ComponentPlugin;
 import io.github.xinfra.lab.telemetry.plugin.spring.mvc.v5.enhancement.ControllerClassEnhancement;
 
 public class SpringMVCPlugin implements ComponentPlugin {
+
+    public static final String NAME = "SpringMVC-5.x";
+
     private final ClassEnhancement controllerEnhancement = new ControllerClassEnhancement();
 
     @Override
     public String pluginName() {
-        return "spring-mvc-5.x";
+        return NAME;
     }
 
     @Override
