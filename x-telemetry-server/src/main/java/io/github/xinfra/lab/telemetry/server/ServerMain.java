@@ -1,10 +1,6 @@
 package io.github.xinfra.lab.telemetry.server;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class ServerMain
 {
     public static void main( String[] args )
     {
