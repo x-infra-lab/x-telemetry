@@ -2,12 +2,14 @@ package io.github.xinfra.lab.telemetry.plugin.spring.mvc.v5.interceptor;
 
 import io.github.xinfra.lab.telemetry.plugin.InterceptContext;
 import io.github.xinfra.lab.telemetry.plugin.interceptor.InstanceMethodAroundInterceptor;
+import io.github.xinfra.lab.telemetry.plugin.spring.mvc.v5.JavaxHttpServletRequestGetter;
 import io.github.xinfra.lab.telemetry.plugin.spring.mvc.v5.SpringMVCPlugin;
 import io.github.xinfra.lab.telemetry.service.OpenTelemetrys;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.context.propagation.ContextPropagators;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,10 +28,10 @@ public class RequestMappingMethodInterceptor implements InstanceMethodAroundInte
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         Context parentContext = Context.current();
-        if (parentContext == null) {
-            // get parent context from request
-            // todo
-        }
+        // get parent context from request
+        ContextPropagators propagators = OpenTelemetrys.getPropagators();
+        propagators.getTextMapPropagator().extract(parentContext, request, JavaxHttpServletRequestGetter.INSTANCE);
+
         Tracer tracer = OpenTelemetrys.getTracer(SpringMVCPlugin.NAME);
         Span span = tracer.spanBuilder(operationName(method))
                 .setParent(parentContext)

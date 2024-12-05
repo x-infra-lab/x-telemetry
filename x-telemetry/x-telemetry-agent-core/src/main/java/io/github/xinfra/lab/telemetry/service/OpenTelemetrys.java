@@ -2,6 +2,9 @@ package io.github.xinfra.lab.telemetry.service;
 
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
+import io.opentelemetry.context.propagation.ContextPropagators;
+import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.logs.SdkLoggerProvider;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
@@ -15,7 +18,6 @@ public class OpenTelemetrys implements AgentService {
     private static OpenTelemetry openTelemetry = OpenTelemetry.noop();
 
 
-
     @Override
     public void startup() {
         // todo
@@ -24,10 +26,17 @@ public class OpenTelemetrys implements AgentService {
         SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder().build();
         // todo
         SdkLoggerProvider sdkLoggerProvider = SdkLoggerProvider.builder().build();
+
+        ContextPropagators contextPropagators = ContextPropagators
+                .create(TextMapPropagator
+                        .composite(W3CTraceContextPropagator
+                                .getInstance()));
+
         openTelemetry = OpenTelemetrySdk.builder()
                 .setMeterProvider(sdkMeterProvider)
                 .setLoggerProvider(sdkLoggerProvider)
                 .setTracerProvider(sdkTracerProvider)
+                .setPropagators(contextPropagators)
                 .build();
     }
 
@@ -40,7 +49,7 @@ public class OpenTelemetrys implements AgentService {
     }
 
 
-    public static OpenTelemetry get(){
+    public static OpenTelemetry get() {
         return openTelemetry;
     }
 
@@ -48,4 +57,9 @@ public class OpenTelemetrys implements AgentService {
         // todo cache it
         return openTelemetry.getTracer(scopeName);
     }
+
+    public static ContextPropagators getPropagators() {
+        return openTelemetry.getPropagators();
+    }
+
 }
