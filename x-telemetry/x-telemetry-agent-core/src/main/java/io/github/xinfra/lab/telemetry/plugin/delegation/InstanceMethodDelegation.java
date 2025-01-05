@@ -1,7 +1,8 @@
 package io.github.xinfra.lab.telemetry.plugin.delegation;
 
 import io.github.xinfra.lab.telemetry.exception.AgentClassLoadException;
-import io.github.xinfra.lab.telemetry.log.LogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogger;
 import io.github.xinfra.lab.telemetry.plugin.InterceptContext;
 import io.github.xinfra.lab.telemetry.plugin.Interceptors;
 import io.github.xinfra.lab.telemetry.plugin.interceptor.InstanceMethodAroundInterceptor;
@@ -10,13 +11,12 @@ import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.SuperCall;
 import net.bytebuddy.implementation.bind.annotation.This;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
 public class InstanceMethodDelegation {
-    private static final Logger LOGGER = LogManager.getLogger(InstanceMethodDelegation.class);
+    private static final AgentLogger LOGGER = AgentLogManager.getLogger(InstanceMethodDelegation.class);
 
     private InstanceMethodAroundInterceptor interceptor;
 

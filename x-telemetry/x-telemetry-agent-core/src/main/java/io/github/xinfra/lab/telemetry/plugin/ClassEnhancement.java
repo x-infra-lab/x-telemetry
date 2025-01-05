@@ -1,15 +1,15 @@
 package io.github.xinfra.lab.telemetry.plugin;
 
-import io.github.xinfra.lab.telemetry.log.LogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogger;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.Logger;
 
 public interface ClassEnhancement {
 
-    Logger LOGGER = LogManager.getLogger(ClassEnhancement.class);
+    AgentLogger LOGGER = AgentLogManager.getLogger(ClassEnhancement.class);
 
     default String[] witnessClasses() {
         return null;

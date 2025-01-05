@@ -1,9 +1,9 @@
-package io.github.xinfra.lab.telemetry.log;
+package io.github.xinfra.lab.telemetry.log.agent;
 
 import io.github.xinfra.lab.telemetry.config.LogConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -16,7 +16,7 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import java.io.File;
 
-public class LogManager {
+public class AgentLogManager {
     public static Appender defaultAppender = null;
 
     static {
@@ -70,12 +70,12 @@ public class LogManager {
         loggerContext.updateLoggers();
     }
 
-    public static Logger getLogger(Class<?> clazz) {
-        return org.apache.logging.log4j.LogManager.getLogger(clazz);
+    public static AgentLogger getLogger(Class<?> clazz) {
+        return new AgentLogger(LogManager.getLogger(clazz));
     }
 
-    public static Logger getLogger(String name) {
-        return org.apache.logging.log4j.LogManager.getLogger(name);
+    public static AgentLogger getLogger(String name) {
+        return new AgentLogger(LogManager.getLogger(name));
     }
 
 }

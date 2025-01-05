@@ -69,13 +69,14 @@
         </dependency>
         <!-- log -->
 
+        <!-- opentelemetry -->
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
             <version>1.44.1</version>
         </dependency>
 
-
+        <!-- test scope -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -84,10 +85,57 @@
         </dependency>
 
     </dependencies>
+
+
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>net.bytebuddy:byte-buddy:jar:</exclude>
+                                    <exclude>com.google.errorprone:error_prone_annotations:jar:</exclude>
+                                    <exclude>com.google.code.findbugs:jsr305:jar:</exclude>
+                                    <exclude>com.google.j2objc:j2objc-annotations:jar:</exclude>
+                                    <exclude>org.checkerframework:checker-qual:jar:</exclude>
+                                </excludes>
+                            </artifactSet>
 
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.opentelemetry</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.io.opentelemetry</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.logging.log4j</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.org.apache.logging.log4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.org.apache.commons</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.com.google</shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-
-
-    <!-- todo: maven-shade-plugin -->
 </project>

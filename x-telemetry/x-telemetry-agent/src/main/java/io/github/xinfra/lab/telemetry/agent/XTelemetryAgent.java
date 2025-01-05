@@ -1,7 +1,8 @@
 package io.github.xinfra.lab.telemetry.agent;
 
 import io.github.xinfra.lab.telemetry.config.ConfigManager;
-import io.github.xinfra.lab.telemetry.log.LogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogger;
 import io.github.xinfra.lab.telemetry.plugin.ClassEnhancement;
 import io.github.xinfra.lab.telemetry.plugin.PluginManager;
 import io.github.xinfra.lab.telemetry.service.ServiceManager;
@@ -10,8 +11,6 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
@@ -24,7 +23,7 @@ import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
  */
 public class XTelemetryAgent {
 
-    private static Logger LOGGER = LogManager.getLogger(XTelemetryAgent.class);
+    private static final AgentLogger LOGGER = AgentLogManager.getLogger(XTelemetryAgent.class);
 
     public static void premain(String agentArgs, Instrumentation inst) {
         try {
@@ -91,7 +90,7 @@ public class XTelemetryAgent {
                                                 ProtectionDomain protectionDomain) {
 
             List<ClassEnhancement> classEnhancementList = PluginManager.getMatchClassEnhancements(typeDescription);
-            if (CollectionUtils.isEmpty(classEnhancementList)) {
+            if (classEnhancementList.isEmpty()) {
                 LOGGER.info("type:{}. no match classEnhancement", typeDescription);
                 return builder;
             }

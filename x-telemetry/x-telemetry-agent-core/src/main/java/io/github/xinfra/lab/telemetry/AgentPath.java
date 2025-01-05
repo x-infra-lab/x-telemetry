@@ -1,8 +1,8 @@
 package io.github.xinfra.lab.telemetry;
 
 import io.github.xinfra.lab.telemetry.exception.AgentPathLocateException;
-import io.github.xinfra.lab.telemetry.log.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogManager;
+import io.github.xinfra.lab.telemetry.log.agent.AgentLogger;
 
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class AgentPath {
-    private static final Logger LOGGER = LogManager.getLogger(AgentPath.class);
+    private static final AgentLogger LOGGER = AgentLogManager.getLogger(AgentPath.class);
     public static volatile Path agentDirPath;
 
 

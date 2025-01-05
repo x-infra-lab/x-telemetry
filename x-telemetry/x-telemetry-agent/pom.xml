@@ -24,6 +24,47 @@
         </dependency>
     </dependencies>
 
-    <!-- todo: maven-shade-plugin -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>com.google.errorprone:error_prone_annotations:jar:</exclude>
+                                    <exclude>com.google.code.findbugs:jsr305:jar:</exclude>
+                                    <exclude>com.google.j2objc:j2objc-annotations:jar:</exclude>
+                                    <exclude>org.checkerframework:checker-qual:jar:</exclude>
+                                    <exclude>io.opentelemetry:*</exclude>
+                                    <exclude>org.apache.logging.log4j:*</exclude>
+                                    <exclude>org.apache.commons.*:*</exclude>
+                                    <exclude>com.google.*:*</exclude>
+                                </excludes>
+                            </artifactSet>
 
+                            <relocations>
+                                <relocation>
+                                    <pattern>net.bytebuddy</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.net.bytebuddy</shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
