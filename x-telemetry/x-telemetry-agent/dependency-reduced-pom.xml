@@ -50,6 +50,13 @@
               </relocations>
               <transformers>
                 <transformer />
+                <transformer>
+                  <manifestEntries>
+                    <Premain-Class>io.github.xinfra.lab.telemetry.agent.XTelemetryAgent</Premain-Class>
+                    <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                    <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                  </manifestEntries>
+                </transformer>
               </transformers>
             </configuration>
           </execution>
