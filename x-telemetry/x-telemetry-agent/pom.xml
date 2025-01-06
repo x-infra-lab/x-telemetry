@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.x-infra-lab</groupId>
+        <artifactId>x-telemetry</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>x-telemetry-agent</artifactId>
+    <packaging>jar</packaging>
+
+    <name>x-telemetry-agent</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.xinfra.lab</groupId>
+            <artifactId>x-telemetry-agent-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <createSourcesJar>true</createSourcesJar>
+                            <shadeSourcesContent>true</shadeSourcesContent>
+
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>com.google.errorprone:error_prone_annotations:jar:</exclude>
+                                    <exclude>com.google.code.findbugs:jsr305:jar:</exclude>
+                                    <exclude>com.google.j2objc:j2objc-annotations:jar:</exclude>
+                                    <exclude>org.checkerframework:checker-qual:jar:</exclude>
+                                    <exclude>org.apache.logging.log4j:*</exclude>
+                                    <exclude>org.apache.commons:*</exclude>
+                                    <exclude>commons-beanutils:*</exclude>
+                                    <exclude>commons-logging:*</exclude>
+                                    <exclude>commons-collections:*</exclude>
+                                    <exclude>com.google.guava:*</exclude>
+                                </excludes>
+                            </artifactSet>
+
+                            <relocations>
+                                <relocation>
+                                    <pattern>net.bytebuddy</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.net.bytebuddy</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.opentelemetry</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.io.opentelemetry</shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Premain-Class>io.github.xinfra.lab.telemetry.agent.XTelemetryAgent</Premain-Class>
+                                        <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                                        <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
