@@ -6,8 +6,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>x-telemetry-agent</artifactId>
-  <name>x-telemetry-agent</name>
+  <artifactId>x-telemetry-plugin</artifactId>
+  <packaging>pom</packaging>
+  <name>x-telemetry-plugin</name>
   <build>
     <plugins>
       <plugin>
@@ -24,20 +25,6 @@
               <createDependencyReducedPom>true</createDependencyReducedPom>
               <createSourcesJar>true</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
-              <artifactSet>
-                <excludes>
-                  <exclude>com.google.errorprone:error_prone_annotations:jar:</exclude>
-                  <exclude>com.google.code.findbugs:jsr305:jar:</exclude>
-                  <exclude>com.google.j2objc:j2objc-annotations:jar:</exclude>
-                  <exclude>org.checkerframework:checker-qual:jar:</exclude>
-                  <exclude>org.apache.logging.log4j:*</exclude>
-                  <exclude>org.apache.commons:*</exclude>
-                  <exclude>commons-beanutils:*</exclude>
-                  <exclude>commons-logging:*</exclude>
-                  <exclude>commons-collections:*</exclude>
-                  <exclude>com.google.guava:*</exclude>
-                </excludes>
-              </artifactSet>
               <relocations>
                 <relocation>
                   <pattern>net.bytebuddy</pattern>
@@ -57,6 +44,10 @@
       </plugin>
     </plugins>
   </build>
+  <modules>
+    <module>spring-plugin</module>
+    <module>mysql-plugin</module>
+  </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

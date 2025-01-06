@@ -37,16 +37,23 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <createSourcesJar>true</createSourcesJar>
+                            <shadeSourcesContent>true</shadeSourcesContent>
+
                             <artifactSet>
                                 <excludes>
                                     <exclude>com.google.errorprone:error_prone_annotations:jar:</exclude>
                                     <exclude>com.google.code.findbugs:jsr305:jar:</exclude>
                                     <exclude>com.google.j2objc:j2objc-annotations:jar:</exclude>
                                     <exclude>org.checkerframework:checker-qual:jar:</exclude>
-                                    <exclude>io.opentelemetry:*</exclude>
                                     <exclude>org.apache.logging.log4j:*</exclude>
-                                    <exclude>org.apache.commons.*:*</exclude>
-                                    <exclude>com.google.*:*</exclude>
+                                    <exclude>org.apache.commons:*</exclude>
+                                    <exclude>commons-beanutils:*</exclude>
+                                    <exclude>commons-logging:*</exclude>
+                                    <exclude>commons-collections:*</exclude>
+                                    <exclude>com.google.guava:*</exclude>
                                 </excludes>
                             </artifactSet>
 
@@ -54,6 +61,10 @@
                                 <relocation>
                                     <pattern>net.bytebuddy</pattern>
                                     <shadedPattern>io.github.xinfra.lab.telemetry.shade.net.bytebuddy</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.opentelemetry</pattern>
+                                    <shadedPattern>io.github.xinfra.lab.telemetry.shade.io.opentelemetry</shadedPattern>
                                 </relocation>
                             </relocations>
 

@@ -22,6 +22,10 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
               <artifactSet>
                 <excludes>
                   <exclude>net.bytebuddy:byte-buddy:jar:</exclude>
@@ -29,13 +33,10 @@
                   <exclude>com.google.code.findbugs:jsr305:jar:</exclude>
                   <exclude>com.google.j2objc:j2objc-annotations:jar:</exclude>
                   <exclude>org.checkerframework:checker-qual:jar:</exclude>
+                  <exclude>io.opentelemetry:opentelemetry*:jar:</exclude>
                 </excludes>
               </artifactSet>
               <relocations>
-                <relocation>
-                  <pattern>io.opentelemetry</pattern>
-                  <shadedPattern>io.github.xinfra.lab.telemetry.shade.io.opentelemetry</shadedPattern>
-                </relocation>
                 <relocation>
                   <pattern>org.apache.logging.log4j</pattern>
                   <shadedPattern>io.github.xinfra.lab.telemetry.shade.org.apache.logging.log4j</shadedPattern>
@@ -69,6 +70,12 @@
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
       <version>1.15.10</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.44.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
