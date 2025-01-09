@@ -83,6 +83,39 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean</id>
+                        <phase>clean</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <target>
+                                <delete dir="${project.basedir}/../dist/x-telemetry-agent"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>package</id>
+                        <phase>package</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${project.basedir}/../dist/x-telemetry-agent"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                      tofile="${project.basedir}/../dist/x-telemetry-agent/x-telemetry-agent.jar" overwrite="true" />
+                                <mkdir dir="${project.basedir}/../dist/x-telemetry-agent/config"/>
+                                <mkdir dir="${project.basedir}/../dist/x-telemetry-agent/logs"/>
+                                <copydir src="${project.basedir}/../config" dest="${project.basedir}/../dist/x-telemetry-agent/config"
+                                         forceoverwrite="true" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
