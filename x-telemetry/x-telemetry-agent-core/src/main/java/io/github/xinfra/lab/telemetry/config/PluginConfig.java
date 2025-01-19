@@ -9,5 +9,6 @@ import java.util.List;
 @Data
 public class PluginConfig {
 
-    List<String> disabledPlugins;
+	List<String> disabledPlugins;
+
 }

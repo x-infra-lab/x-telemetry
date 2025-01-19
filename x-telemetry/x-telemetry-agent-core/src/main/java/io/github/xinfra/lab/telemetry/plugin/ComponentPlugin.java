@@ -2,7 +2,8 @@ package io.github.xinfra.lab.telemetry.plugin;
 
 public interface ComponentPlugin {
 
-    String pluginName();
+	String pluginName();
 
-    ClassEnhancement[] classEnhancements();
+	ClassEnhancement[] classEnhancements();
+
 }

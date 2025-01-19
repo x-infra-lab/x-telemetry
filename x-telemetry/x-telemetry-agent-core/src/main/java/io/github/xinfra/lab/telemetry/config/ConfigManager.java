@@ -1,7 +1,6 @@
 package io.github.xinfra.lab.telemetry.config;
 
-
-import io.github.xinfra.lab.telemetry.log.agent.AgentLogManager;
+import io.github.xinfra.lab.telemetry.logger.AgentLogManager;
 import org.apache.commons.beanutils.BeanUtilsBean2;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -9,37 +8,39 @@ import java.util.Map;
 
 public class ConfigManager {
 
-    public static final AgentConfig CONFIG = new AgentConfig();
+	/**
+	 * represent the global configuration of agent
+	 */
+	public static final AgentConfig AGENT_CONFIG = new AgentConfig();
 
-    public static void loadConfig(String agentArgs) throws InvocationTargetException, IllegalAccessException {
-        Map<String, Object> properties = new HashMap<>();
+	public static void loadConfig(String agentArgs) throws InvocationTargetException, IllegalAccessException {
+		Map<String, Object> properties = new HashMap<>();
 
-        // load config file
-        loadConfigFile(properties);
+		// load config file
+		loadConfigFile(properties);
 
-        // load system env
-        loadSystemEnv(properties);
+		// load system env
+		loadSystemEnv(properties);
 
-        // load system properties
-        loadSystemProperties(properties);
+		// load system properties
+		loadSystemProperties(properties);
 
+		BeanUtilsBean2.getInstance().populate(AGENT_CONFIG, properties);
+	}
 
-        BeanUtilsBean2.getInstance().populate(CONFIG, properties);
-    }
+	private static void loadSystemEnv(Map<String, Object> properties) {
+	}
 
-    private static void loadSystemEnv(Map<String, Object> properties) {
-    }
+	private static void loadSystemProperties(Map<String, Object> properties) {
+		// todo
+	}
 
+	private static void loadConfigFile(Map<String, Object> properties) {
+		// todo
+	}
 
-    private static void loadSystemProperties(Map<String, Object> properties) {
-        // todo
-    }
+	public static void refreshConfig() {
+		AgentLogManager.refreshConfig(AGENT_CONFIG.getAgentLogConfig());
+	}
 
-    private static void loadConfigFile(Map<String, Object> properties) {
-        // todo
-    }
-
-    public static void refreshConfig() {
-        AgentLogManager.refreshConfig(CONFIG.getLog());
-    }
 }

@@ -6,9 +6,12 @@ import java.lang.reflect.Method;
 
 public interface StaticMethodAroundInterceptor {
 
-    void beforeMethod(InterceptContext interceptContext, Class<?> clazz, Method method, Object[] allArguments);
+	void beforeMethod(InterceptContext interceptContext, Class<?> clazz, Method method, Object[] allArguments);
 
-    void methodException(InterceptContext interceptContext, Class<?> clazz, Method method, Object[] allArguments, Throwable throwable);
+	void methodException(InterceptContext interceptContext, Class<?> clazz, Method method, Object[] allArguments,
+			Throwable throwable);
 
-    Object afterMethod(InterceptContext interceptContext, Class<?> clazz, Method method, Object[] allArguments, Object result);
+	Object afterMethod(InterceptContext interceptContext, Class<?> clazz, Method method, Object[] allArguments,
+			Object result);
+
 }

@@ -5,16 +5,16 @@ import net.bytebuddy.matcher.ElementMatcher;
 
 public interface MethodInterceptorPoint {
 
-    ElementMatcher<MethodDescription> getMethodMatcher();
+	ElementMatcher<MethodDescription> getMethodMatcher();
 
-    String getMethodInterceptor();
+	String getMethodInterceptor();
 
-    default boolean isStatic() {
-        return false;
-    }
+	default boolean isStatic() {
+		return false;
+	}
 
-    default boolean isConstructor() {
-        return false;
-    }
+	default boolean isConstructor() {
+		return false;
+	}
 
 }

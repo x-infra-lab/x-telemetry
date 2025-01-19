@@ -12,15 +12,16 @@ import static net.bytebuddy.matcher.ElementMatchers.not;
 @ToString
 public class WitnessMethod {
 
+	@Getter
+	private final String declaringClassName;
 
-    @Getter
-    private final String declaringClassName;
+	@Getter
+	private final ElementMatcher<? super MethodDescription.InDefinedShape> elementMatcher;
 
-    @Getter
-    private final ElementMatcher<? super MethodDescription.InDefinedShape> elementMatcher;
+	public WitnessMethod(String declaringClassName,
+			ElementMatcher.Junction<? super MethodDescription.InDefinedShape> elementMatcher) {
+		this.declaringClassName = declaringClassName;
+		this.elementMatcher = Preconditions.checkNotNull(elementMatcher).and(not(isSynthetic()));
+	}
 
-    public WitnessMethod(String declaringClassName, ElementMatcher.Junction<? super MethodDescription.InDefinedShape> elementMatcher) {
-        this.declaringClassName = declaringClassName;
-        this.elementMatcher = Preconditions.checkNotNull(elementMatcher).and(not(isSynthetic()));
-    }
 }

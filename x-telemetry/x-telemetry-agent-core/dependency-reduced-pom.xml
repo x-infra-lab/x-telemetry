@@ -75,7 +75,25 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.44.1</version>
+      <version>1.46.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-otlp</artifactId>
+      <version>1.46.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-prometheus</artifactId>
+      <version>1.46.0-alpha</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-zipkin</artifactId>
+      <version>1.46.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -101,5 +119,6 @@
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <opentelemetry.version>1.46.0</opentelemetry.version>
   </properties>
 </project>
