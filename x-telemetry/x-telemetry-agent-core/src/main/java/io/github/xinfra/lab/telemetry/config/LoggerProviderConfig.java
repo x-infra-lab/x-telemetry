@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class LoggerProviderConfig {
 
-	private LoggerProviderType tracerProviderType;
+	private LoggerProviderType loggerProviderType;
 
 }

@@ -11,6 +11,6 @@ public class MeterProviderConfig {
 
 	private int meterIntervalMills = 10_000; // 10s
 
-	private PrometheusConfig prometheusConfig;
+	private PrometheusConfig prometheusConfig = new PrometheusConfig();
 
 }

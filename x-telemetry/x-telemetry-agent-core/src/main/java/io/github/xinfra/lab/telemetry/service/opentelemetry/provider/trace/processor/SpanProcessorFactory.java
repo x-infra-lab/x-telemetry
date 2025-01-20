@@ -12,7 +12,6 @@ public class SpanProcessorFactory {
 	public static SpanProcessor create(TracerProviderConfig tracerProviderConfig, SdkMeterProvider sdkMeterProvider) {
 		SpanExporter spanExporter = ExporterFactory.createSpanExporter(tracerProviderConfig);
 		return BatchSpanProcessor.builder(spanExporter).setMeterProvider(sdkMeterProvider).build();
-
 	}
 
 }

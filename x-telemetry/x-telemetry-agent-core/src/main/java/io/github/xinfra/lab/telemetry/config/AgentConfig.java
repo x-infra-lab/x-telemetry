@@ -15,14 +15,14 @@ public class AgentConfig {
 
 	private boolean enable = true;
 
-	private MeterProviderConfig meterProviderConfig;
+	private AgentLogConfig agentLogConfig = new AgentLogConfig();
 
-	private TracerProviderConfig tracerProviderConfig;
+	private PluginConfig pluginConfig = new PluginConfig();
 
-	private LoggerProviderConfig loggerProviderConfig;
+	private MeterProviderConfig meterProviderConfig = new MeterProviderConfig();
 
-	private AgentLogConfig agentLogConfig;
+	private TracerProviderConfig tracerProviderConfig = new TracerProviderConfig();
 
-	private PluginConfig pluginConfig;
+	private LoggerProviderConfig loggerProviderConfig = new LoggerProviderConfig();
 
 }
