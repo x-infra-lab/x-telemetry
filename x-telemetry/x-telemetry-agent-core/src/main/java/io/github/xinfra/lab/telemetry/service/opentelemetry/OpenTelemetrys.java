@@ -1,12 +1,11 @@
-package io.github.xinfra.lab.telemetry.opentelemetry;
+package io.github.xinfra.lab.telemetry.service.opentelemetry;
 
 import io.github.xinfra.lab.telemetry.config.LoggerProviderConfig;
 import io.github.xinfra.lab.telemetry.config.MeterProviderConfig;
 import io.github.xinfra.lab.telemetry.config.TracerProviderConfig;
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.exporter.ExporterFactory;
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.log.processor.LogRecordProcessorFactory;
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.meter.reader.MeterReaderFactory;
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.trace.processor.SpanProcessorFactory;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.log.processor.LogRecordProcessorFactory;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.meter.reader.MeterReaderFactory;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.trace.processor.SpanProcessorFactory;
 import io.github.xinfra.lab.telemetry.service.AgentService;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
@@ -16,15 +15,13 @@ import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.logs.LogRecordProcessor;
 import io.opentelemetry.sdk.logs.SdkLoggerProvider;
-import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
-import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.MetricReader;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
-import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static io.github.xinfra.lab.telemetry.config.ConfigManager.AGENT_CONFIG;
@@ -32,6 +29,13 @@ import static io.github.xinfra.lab.telemetry.config.ConfigManager.AGENT_CONFIG;
 public class OpenTelemetrys implements AgentService {
 
 	private static OpenTelemetry openTelemetry = OpenTelemetry.noop();
+
+	private static Map<String, Tracer> tracers = new ConcurrentHashMap<>();
+
+	@Override
+	public int priority() {
+		return Integer.MIN_VALUE;
+	}
 
 	@Override
 	public void startup() {
@@ -63,6 +67,7 @@ public class OpenTelemetrys implements AgentService {
 			.setTracerProvider(sdkTracerProvider)
 			.setPropagators(contextPropagators)
 			.build();
+
 	}
 
 	@Override
@@ -78,8 +83,7 @@ public class OpenTelemetrys implements AgentService {
 	}
 
 	public static Tracer getTracer(String scopeName) {
-		// todo cache it
-		return openTelemetry.getTracer(scopeName);
+		return tracers.computeIfAbsent(scopeName, k -> openTelemetry.getTracer(k));
 	}
 
 	public static ContextPropagators getPropagators() {

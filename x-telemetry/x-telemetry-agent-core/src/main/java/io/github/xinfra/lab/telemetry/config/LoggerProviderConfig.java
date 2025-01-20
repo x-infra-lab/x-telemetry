@@ -1,6 +1,6 @@
 package io.github.xinfra.lab.telemetry.config;
 
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.LoggerProviderType;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.LoggerProviderType;
 import lombok.Data;
 
 @Data

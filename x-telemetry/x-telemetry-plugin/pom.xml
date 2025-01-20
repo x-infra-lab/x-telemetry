@@ -13,7 +13,6 @@
     <name>x-telemetry-plugin</name>
     <modules>
         <module>spring-plugin</module>
-        <module>mysql-plugin</module>
     </modules>
 
     <properties>

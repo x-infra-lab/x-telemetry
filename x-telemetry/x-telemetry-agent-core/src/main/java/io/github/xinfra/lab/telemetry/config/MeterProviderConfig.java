@@ -1,7 +1,7 @@
 package io.github.xinfra.lab.telemetry.config;
 
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.MeterProviderType;
-import io.github.xinfra.lab.telemetry.opentelemetry.provider.config.PrometheusConfig;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.MeterProviderType;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.config.PrometheusConfig;
 import lombok.Data;
 
 @Data

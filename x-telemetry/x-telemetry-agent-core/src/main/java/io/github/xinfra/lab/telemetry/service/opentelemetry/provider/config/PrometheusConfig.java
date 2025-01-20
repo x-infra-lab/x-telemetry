@@ -1,4 +1,4 @@
-package io.github.xinfra.lab.telemetry.opentelemetry.provider.config;
+package io.github.xinfra.lab.telemetry.service.opentelemetry.provider.config;
 
 import lombok.Data;
 

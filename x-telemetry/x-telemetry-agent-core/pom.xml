@@ -70,7 +70,7 @@
         </dependency>
         <!-- log -->
 
-        <!-- opentelemetry -->
+        <!-- opentelemetry start-->
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
@@ -91,6 +91,14 @@
             <artifactId>opentelemetry-exporter-zipkin</artifactId>
             <version>${opentelemetry.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-jmx-metrics -->
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-jmx-metrics</artifactId>
+            <version>2.12.0-alpha</version>
+        </dependency>
+
+        <!-- opentelemetry end-->
 
         <!-- test scope -->
         <dependency>

@@ -1,7 +1,7 @@
 package io.github.xinfra.lab.telemetry.service;
 
 import com.google.common.collect.Lists;
-import io.github.xinfra.lab.telemetry.opentelemetry.OpenTelemetrys;
+import io.github.xinfra.lab.telemetry.service.opentelemetry.OpenTelemetrys;
 
 import java.util.List;
 
