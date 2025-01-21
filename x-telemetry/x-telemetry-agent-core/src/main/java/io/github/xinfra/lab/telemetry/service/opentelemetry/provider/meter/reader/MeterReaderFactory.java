@@ -18,7 +18,7 @@ public class MeterReaderFactory {
 
 		MeterProviderType meterProviderType = meterProviderConfig.getMeterProviderType();
 		switch (meterProviderType) {
-			case Prometheus:
+			case prometheus:
 				PrometheusConfig prometheusConfig = meterProviderConfig.getPrometheusConfig();
 				return PrometheusHttpServer.builder().setPort(prometheusConfig.getPort()).build();
 			default:

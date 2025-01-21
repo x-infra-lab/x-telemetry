@@ -2,6 +2,6 @@ package io.github.xinfra.lab.telemetry.service.opentelemetry.provider;
 
 public enum LoggerProviderType {
 
-	GrafanaLoki,;
+	otlp, loki,;
 
 }

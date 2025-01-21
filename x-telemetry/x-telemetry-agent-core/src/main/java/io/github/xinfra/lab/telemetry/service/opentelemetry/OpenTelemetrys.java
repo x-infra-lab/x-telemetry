@@ -7,6 +7,7 @@ import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.log.process
 import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.meter.reader.MeterReaderFactory;
 import io.github.xinfra.lab.telemetry.service.opentelemetry.provider.trace.processor.SpanProcessorFactory;
 import io.github.xinfra.lab.telemetry.service.AgentService;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
@@ -45,13 +46,12 @@ public class OpenTelemetrys implements AgentService {
 		SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder().registerMetricReader(metricReader).build();
 		// set trace
 		TracerProviderConfig tracerProviderConfig = AGENT_CONFIG.getTracerProviderConfig();
-		SpanProcessor spanProcessor = SpanProcessorFactory.create(tracerProviderConfig, sdkMeterProvider);
+		SpanProcessor spanProcessor = SpanProcessorFactory.create(tracerProviderConfig);
 		SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build();
 
 		// set log
 		LoggerProviderConfig loggerProviderConfig = AGENT_CONFIG.getLoggerProviderConfig();
-		LogRecordProcessor logRecordProcessor = LogRecordProcessorFactory.create(loggerProviderConfig,
-				sdkMeterProvider);
+		LogRecordProcessor logRecordProcessor = LogRecordProcessorFactory.create(loggerProviderConfig);
 		SdkLoggerProvider sdkLoggerProvider = SdkLoggerProvider.builder()
 			.addLogRecordProcessor(logRecordProcessor)
 			.build();
@@ -67,6 +67,8 @@ public class OpenTelemetrys implements AgentService {
 			.setTracerProvider(sdkTracerProvider)
 			.setPropagators(contextPropagators)
 			.build();
+
+		GlobalOpenTelemetry.set(openTelemetry);
 
 	}
 

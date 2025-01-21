@@ -9,9 +9,9 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 public class SpanProcessorFactory {
 
-	public static SpanProcessor create(TracerProviderConfig tracerProviderConfig, SdkMeterProvider sdkMeterProvider) {
+	public static SpanProcessor create(TracerProviderConfig tracerProviderConfig) {
 		SpanExporter spanExporter = ExporterFactory.createSpanExporter(tracerProviderConfig);
-		return BatchSpanProcessor.builder(spanExporter).setMeterProvider(sdkMeterProvider).build();
+		return BatchSpanProcessor.builder(spanExporter).build();
 	}
 
 }

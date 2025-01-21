@@ -1,12 +1,8 @@
 package io.github.xinfra.lab.telemetry.config;
 
 import io.github.xinfra.lab.telemetry.AgentPath;
+import io.github.xinfra.lab.telemetry.common.Beans;
 import io.github.xinfra.lab.telemetry.logger.AgentLogManager;
-import org.apache.commons.beanutils.BeanUtilsBean2;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.converters.AbstractConverter;
-import org.apache.commons.beanutils.converters.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -28,30 +24,6 @@ public class ConfigManager {
 
 	public static final String AGENT_CONFIG_FILE_PATH = "x.agent.config.file";
 
-	static class String2EnumConverter implements Converter {
-
-		public static StringConverter stringConverter = new StringConverter();
-
-		@Override
-		public <T> T convert(Class<T> type, Object value) {
-			try {
-				return stringConverter.convert(type, value);
-			}
-			catch (Exception e) {
-				if (type.isEnum()) {
-					Class clazz = type;
-					return (T) Enum.valueOf(clazz, value.toString());
-				}
-				throw e;
-			}
-		}
-
-	}
-
-	static {
-		ConvertUtils.register(new String2EnumConverter(), String.class);
-	}
-
 	public static void loadConfig(String agentArgs)
 			throws InvocationTargetException, IllegalAccessException, IOException {
 		Map<String, Object> properties = new HashMap<>();
@@ -65,7 +37,7 @@ public class ConfigManager {
 		// load system properties
 		loadSystemProperties(properties);
 
-		BeanUtilsBean2.getInstance().populate(AGENT_CONFIG, properties);
+		Beans.populate(AGENT_CONFIG, properties);
 	}
 
 	private static void loadSystemEnv(Map<String, Object> properties) {

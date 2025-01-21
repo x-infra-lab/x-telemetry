@@ -9,10 +9,9 @@ import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 
 public class LogRecordProcessorFactory {
 
-	public static LogRecordProcessor create(LoggerProviderConfig loggerProviderConfig,
-			SdkMeterProvider sdkMeterProvider) {
+	public static LogRecordProcessor create(LoggerProviderConfig loggerProviderConfig) {
 		LogRecordExporter logRecordExporter = ExporterFactory.createLogRecordExporter(loggerProviderConfig);
-		return BatchLogRecordProcessor.builder(logRecordExporter).setMeterProvider(sdkMeterProvider).build();
+		return BatchLogRecordProcessor.builder(logRecordExporter).build();
 	}
 
 }
